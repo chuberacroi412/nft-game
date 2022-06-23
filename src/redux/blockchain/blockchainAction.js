@@ -1,4 +1,4 @@
-import Web from "web3"
+import Web3 from "web3"
 import LipToken from '../../contracts/LipToken.json'
 
 const connectRequest = () => {
@@ -77,5 +77,12 @@ export const connect = () => {
         else {
             dispatch(connectFailed('Install Metamask'))
         }
+    }
+}
+
+export const updateAccount = (account) => {
+    return async (dispatch) => {
+        dispatch(updateAccountRequest({account: account}))
+        //dispatch(fetchData(account))
     }
 }

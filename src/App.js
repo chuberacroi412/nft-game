@@ -5,6 +5,8 @@ import {connect} from './redux/blockchain/blockchainAction'
 import { fetchData } from "./redux/data/dataActions";
 import { useEffect } from 'react';
 import * as s from "./styles/globalStyles";
+import LipRenderer from "./components/lipRenderer";
+import _color from "./assets/images/bg/_color.png";
 
 function App() {
   const dispatch = useDispatch()
@@ -40,7 +42,7 @@ function App() {
   }, [blockchain.lipToken]);
 
   return (
-    <s.Screen>
+    <s.Screen image={_color}>
       {blockchain.account === "" || blockchain.lipToken === null ? (
       <s.Container flex={1} ai={"center"} jc={"center"} style={{backgroundColor: "green"}}>
         <s.TextTitle>Connect to the game</s.TextTitle>
@@ -67,6 +69,34 @@ function App() {
           >
             CREATE NFT LIP
           </button>
+          <s.SpacerMedium />
+          <s.Container jc={"center"} fd={"row"} style={{ flexWrap: "wrap" }}>
+            {data.allLips.map((item, index) => {
+              return (
+                <s.Container key={index} style={{ padding: "15px" }}>
+                  <LipRenderer lip={item} />
+                  <s.SpacerXSmall />
+                  <s.Container>
+                    <s.TextDescription>ID: {item.id}</s.TextDescription>
+                    <s.TextDescription>DNA: {item.dna}</s.TextDescription>
+                    <s.TextDescription>LEVEL: {item.level}</s.TextDescription>
+                    <s.TextDescription>NAME: {item.name}</s.TextDescription>
+                    <s.TextDescription>RARITY: {item.rarity}</s.TextDescription>
+                    <s.SpacerXSmall />
+                    <button
+                      disabled={loading ? 1 : 0}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        levelUpLip(blockchain.account, item.id);
+                      }}
+                    >
+                      Level Up
+                    </button>
+                  </s.Container>
+                </s.Container>
+              );
+            })}
+          </s.Container>
         </s.Container>
       )}
     </s.Screen>
